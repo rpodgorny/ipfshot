@@ -33,7 +33,10 @@ def main():
     while 1:
         for pth in pths:
             print(pth)
+            t_begin = time.time()
             lst = ipfs_recur_listing(pth)
+            t_end = time.time()
+            print('listing took %ss' % (t_end - t_begin, ))
             if lst is None:
                 print('err')
                 continue
@@ -46,6 +49,8 @@ def main():
                     ipfs_cat_dev_null(cid)
                     print('!')
                 cids.add(cid)
+        if first_run:
+            print('first run done')
         first_run = 0
         print('zzz')
         time.sleep(600)  # TODO: hard-coded shit
