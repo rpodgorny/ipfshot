@@ -6,9 +6,12 @@ import subprocess
 import time
 
 
+IPFS = 'ipfs --api /ip4/127.0.0.1/tcp/5001'
+
+
 def ipfs_recur_listing(pth):
     try:
-        out = subprocess.check_output('ipfs ls --size=false %s' % pth, shell=True, universal_newlines=True)
+        out = subprocess.check_output('%s ls --size=false %s' % (IPFS, pth), shell=True, universal_newlines=True)
     except:
         return None
     for line in out.split('\n'):
@@ -23,7 +26,7 @@ def ipfs_recur_listing(pth):
 
 
 def ipfs_cat_dev_null(pth):
-    subprocess.check_call('ipfs cat %s >/dev/null' % pth, shell=True)
+    subprocess.check_call('%s cat %s >/dev/null' % (IPFS, pth), shell=True)
 
 
 def main():
