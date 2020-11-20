@@ -29,6 +29,10 @@ def ipfs_cat_dev_null(pth):
     subprocess.check_call('%s cat %s >/dev/null' % (IPFS, pth), shell=True)
 
 
+def ipfs_provide(cid):
+    subprocess.check_call('%s dht provide %s' % (IPFS, cid), shell=True)
+
+
 def main():
     pths = sys.argv[1:]
     first_run = 1
@@ -37,7 +41,7 @@ def main():
         for pth in pths:
             print(pth)
             t_begin = time.time()
-            lst = ipfs_recur_listing(pth)
+            lst = list(ipfs_recur_listing(pth))
             t_end = time.time()
             print('listing took %ss' % (t_end - t_begin, ))
             if lst is None:
@@ -48,9 +52,11 @@ def main():
                     continue
                 print(cid, name)
                 if not first_run:
-                    print('>')
+                    print('cat...')
                     ipfs_cat_dev_null(cid)
-                    print('!')
+                    print('provide...')
+                    ipfs_provide(cid)
+                    print('OK')
                 cids.add(cid)
         if first_run:
             print('first run done')
